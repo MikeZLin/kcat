@@ -68,8 +68,10 @@ typedef enum {
         KC_FMT_STR,
         KC_FMT_OFFSET,
         KC_FMT_KEY,
+        KC_FMT_KEY_BASE64,
         KC_FMT_KEY_LEN,
         KC_FMT_PAYLOAD,
+        KC_FMT_PAYLOAD_BASE64,
         KC_FMT_PAYLOAD_LEN,
         KC_FMT_PAYLOAD_LEN_BINARY,
         KC_FMT_TOPIC,
@@ -106,6 +108,8 @@ struct conf {
 #define CONF_F_FMT_AVRO_KEY   0x400 /* Convert key from Avro to JSON */
 #define CONF_F_FMT_AVRO_VALUE 0x800 /* Convert value from Avro to JSON  */
 #define CONF_F_SR_URL_SEEN    0x1000 /* schema.registry.url/-r seen */
+#define CONF_F_FMT_BASE64_KEY   0x2000 /* Convert key to/from Base64 */
+#define CONF_F_FMT_BASE64_VALUE 0x4000 /* Convert value to/from Base64 */
         char   *delim;
         size_t  delim_size;
         char   *key_delim;
