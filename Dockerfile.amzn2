@@ -1,0 +1,22 @@
+FROM amazonlinux:2 as builder
+
+COPY . /usr/src/kcat
+
+ENV BUILD_DEPS zlib-devel lz4-devel openssl-devel python cmake libcurl-devel NetworkManager-glib-devel pm-utils-devel ca-certificates curl git python-devel openldap-devel which gcc "gcc-c++" wget libzstd-devel python3
+
+RUN yum update -y
+RUN yum groupinstall -y 'Development Tools' 
+RUN yum install -y $BUILD_DEPS
+RUN  echo "Building" &&  cd /usr/src/kcat &&   rm -rf tmp-bootstrap 
+WORKDIR /usr/src/kcat
+RUN  ./bootstrap.sh --no-enable-static 
+
+FROM amazonlinux:2 as APP
+COPY --from=builder /usr/src/kcat/kcat /kcat
+
+RUN /kcat -V
+ENTRYPOINT ["/kcat"]
+# To build and extract the image run:
+# docker run -it --entrypoint /bin/bash -td --name kcat_build kcat
+# docker cp kcat_build:/kcat ./kcat
+# docker kill kcat_build
